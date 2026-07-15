@@ -1,15 +1,23 @@
+
+
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 import joblib
 
-# Load dataset
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+
 df = pd.read_csv("antenna_dataset.csv")
 
-# Input
-X = df[["Frequency_GHz"]]
+X = df[
+    [
+        "Frequency_GHz",
+        "Dielectric_Constant",
+        "Height_mm",
+        "Loss_Tangent",
+        "Copper_Thickness_mm"
+    ]
+]
 
-# Outputs
 y = df[
     [
         "Patch_Width_mm",
@@ -19,7 +27,6 @@ y = df[
     ]
 ]
 
-# Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -27,7 +34,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# Model
 model = RandomForestRegressor(
     n_estimators=200,
     random_state=42
@@ -35,7 +41,6 @@ model = RandomForestRegressor(
 
 model.fit(X_train, y_train)
 
-# Save Model
 joblib.dump(model, "antenna_model.pkl")
 
-print("Model trained successfully!")
+print("Model trained successfully")
