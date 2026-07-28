@@ -4,6 +4,7 @@
 import streamlit as st
 import joblib
 import pandas as pd
+from utils.antenna_3d import create_antenna_3d
 st.set_page_config(
     page_title="AI Patch Antenna Designer",
     page_icon="📡",
@@ -220,28 +221,26 @@ copper = st.number_input(
 if st.button("Generate Dimensions"):
 
     input_df = pd.DataFrame({
-        "Frequency_GHz":[frequency],
-        "Dielectric_Constant":[er],
-        "Height_mm":[height],
-        "Loss_Tangent":[loss],
-        "Copper_Thickness_mm":[copper]
+        "Frequency_GHz": [frequency],
+        "Dielectric_Constant": [er],
+        "Height_mm": [height],
+        "Loss_Tangent": [loss],
+        "Copper_Thickness_mm": [copper]
     })
 
+    # Predict first
     prediction = model.predict(input_df)[0]
 
     st.success("Design Generated Successfully")
-
-    st.markdown("<div class='summary'>", unsafe_allow_html=True)
 
     st.subheader("📋 Design Summary")
 
     st.write(f"Center Frequency : {frequency:.2f} GHz")
     st.write(f"Substrate : {material}")
-    st.write(f"Dielectric Constant (εr) : {er}")
+    st.write(f"Dielectric Constant : {er}")
     st.write(f"Height : {height} mm")
     st.write(f"Loss Tangent : {loss}")
     st.write(f"Copper Thickness : {copper} mm")
-    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("---")
 
@@ -251,3 +250,17 @@ if st.button("Generate Dimensions"):
     st.write(f"Patch Length : {prediction[1]:.2f} mm")
     st.write(f"Ground Width : {prediction[2]:.2f} mm")
     st.write(f"Ground Length : {prediction[3]:.2f} mm")
+
+    st.markdown("---")
+
+    st.subheader("🛰️ Interactive 3D Patch Antenna")
+
+    fig = create_antenna_3d(
+        patch_width=prediction[0],
+        patch_length=prediction[1],
+        ground_width=prediction[2],
+        ground_length=prediction[3],
+        substrate_height=height,
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
