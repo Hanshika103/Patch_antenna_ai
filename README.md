@@ -14,6 +14,12 @@
 
 https://patchantennaai-hyk33pinnnpwawcpvnwyyo.streamlit.app/
 
+## 🎥 Demo Video
+
+Watch the complete project demonstration on YouTube:
+
+👉 https://youtu.be/oDSe3M6JIgs
+
 ## 📖 Overview
 
 AI Patch Antenna Designer is an intelligent web application that predicts the optimal dimensions of a rectangular microstrip patch antenna using Machine Learning.
